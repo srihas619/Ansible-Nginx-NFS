@@ -1,0 +1,14 @@
+---
+- name: Start rpcbind nfs-server rpc-statd nfs-idmapd
+  service:
+    name: "{{ item }}"
+    enabled: yes
+    state: restarted
+  with_items:
+    - rpcbind
+    - nfs-server
+    - rpc-statd
+    - nfs-idmapd
+
+- name: Reload nfs-server
+  command: 'exportfs -ra'

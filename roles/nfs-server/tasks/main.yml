@@ -1,0 +1,38 @@
+---
+- name: Install nfs-utils and libnfsidmap
+  yum:
+    name:
+      - nfs-utils
+      - libnfsidmap
+    state: present
+    update_cache: true
+  notify:
+  - Start rpcbind nfs-server rpc-statd nfs-idmapd
+
+- name: Create mountable directory
+  file:
+    path: /nfs
+    state: directory
+    mode: 755
+
+- name: Filesystem for mount drive
+  filesystem:
+    fstype: ext4
+    dev: /dev/sdb1
+
+- name: Set mountpoint
+  mount:
+    name: /nfs
+    src: /dev/sdb1
+    fstype: auto
+    boot: yes
+    opts: defaults
+    passno: 2
+    state: mounted
+
+- name: Copy exports
+  template:
+    src: exports.j2
+    dest: /etc/exports
+  notify:
+  - Reload nfs-server

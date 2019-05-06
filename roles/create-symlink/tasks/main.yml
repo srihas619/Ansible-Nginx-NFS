@@ -1,0 +1,24 @@
+---
+- name: Create custom html root
+  file:
+    path: /mnt/data/html
+    state: directory
+
+- name: Remove html root
+  file:
+    state: absent
+    path: /usr/share/nginx/html
+
+- name: Create symlink
+  file:
+    src: /mnt/data/html
+    dest: /usr/share/nginx/html
+    state: link
+
+- name: Copy index.html
+  template:
+    src: index.html
+    dest: /mnt/data/html/index.html
+    mode: 777
+    owner: nginx
+    group: nginx

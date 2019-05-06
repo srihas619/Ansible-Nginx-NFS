@@ -1,0 +1,8 @@
+---
+- hosts: nginx01
+  become: true
+  roles:
+    - nginx
+    - nfs-server
+    - nfs-client
+    - create-symlink

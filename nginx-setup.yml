@@ -1,0 +1,5 @@
+---
+- hosts: nginx01
+  become: true
+  roles:
+    - nginx

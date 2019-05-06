@@ -1,0 +1,27 @@
+---
+- name: Install nfs client utils
+  yum:
+    name:
+      - nfs-utils
+      - libnfsidmap
+    state: present
+    update_cache: true
+  notify:
+  - Start rpcbind
+
+- name: Create moutable directory
+  file:
+    path: /mnt/data
+    state: directory
+    mode: 755
+    owner: root
+    group: root
+
+- name: Set mountpoints
+  mount:
+    path: /mnt/data
+    src: "{{ ansible_host }}:/nfs"
+    fstype: nfs
+    opts: defaults
+    passno: 2
+    state: mounted

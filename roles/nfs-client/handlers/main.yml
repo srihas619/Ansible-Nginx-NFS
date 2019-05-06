@@ -1,0 +1,6 @@
+---
+- name: Start rpcbind
+  service:
+    name: rpcbind
+    enabled: yes
+    state: restarted
